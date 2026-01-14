@@ -1,0 +1,78 @@
+CREATE TABLE t_couleur(
+   id_couleur INT AUTO_INCREMENT,
+   nomCouleur VARCHAR(50) NOT NULL,
+   PRIMARY KEY(id_couleur)
+);
+
+CREATE TABLE t_typebiere(
+   id_type INT AUTO_INCREMENT,
+   nomType VARCHAR(50),
+   PRIMARY KEY(id_type)
+);
+
+CREATE TABLE t_fabricant(
+   id_fabricant INT AUTO_INCREMENT, 
+   nomFabricant VARCHAR(50),
+   PRIMARY KEY(id_fabricant)
+);
+
+CREATE TABLE t_continent(
+   id_continent INT AUTO_INCREMENT,
+   nomContinent VARCHAR(50),
+   PRIMARY KEY(id_continent)
+);
+
+CREATE TABLE t_ticket(
+   id_ticket INT AUTO_INCREMENT,
+   annee DATE,
+   numTicket INT NOT NULL,
+   dateVente DATE,
+   PRIMARY KEY(id_ticket)
+);
+
+CREATE TABLE t_pays(
+   id_pays INT AUTO_INCREMENT,
+   nomPays VARCHAR(50),
+   id_continent INT NOT NULL,
+   PRIMARY KEY(id_pays),
+   FOREIGN KEY(id_continent) REFERENCES t_continent(id_continent)
+);
+
+CREATE TABLE t_marque(
+   id_marque INT AUTO_INCREMENT,
+   nomMarque VARCHAR(50),
+   id_pays INT NOT NULL,
+   id_fabricant INT NOT NULL,
+   PRIMARY KEY(id_marque),
+   FOREIGN KEY(id_pays) REFERENCES t_pays(id_pays),
+   FOREIGN KEY(id_fabricant) REFERENCES t_fabricant(id_fabricant)
+);
+
+CREATE TABLE t_article(
+   id_article INT AUTO_INCREMENT,
+   nomArticle VARCHAR(50),
+   pxAchat INT,
+   volume INT,
+   titrage DECIMAL(15,2),
+   id_marque INT NOT NULL,
+   id_couleur INT NOT NULL,
+   id_type INT NOT NULL,
+   PRIMARY KEY(id_article),
+   FOREIGN KEY(id_marque) REFERENCES t_marque(id_marque),
+   FOREIGN KEY(id_couleur) REFERENCES t_couleur(id_couleur),
+   FOREIGN KEY(id_type) REFERENCES t_typebiere(id_type)
+);
+
+CREATE TABLE t_vente(
+   id_ligneVente INT AUTO_INCREMENT,
+   annee DATE,
+   numTicket INT,
+   id_article INT,
+   Qte INT,
+   pxVente INT,
+   id_ticket INT NOT NULL,
+   id_article_1 INT NOT NULL,
+   PRIMARY KEY(id_ligneVente),
+   FOREIGN KEY(id_ticket) REFERENCES t_ticket(id_ticket),
+   FOREIGN KEY(id_article_1) REFERENCES t_article(id_article)
+);
